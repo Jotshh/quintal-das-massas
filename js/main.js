@@ -227,3 +227,35 @@ window.addEventListener('scroll', () => {
     tabButtons.forEach((b, i) => b.classList.toggle('active', i === activeIdx));
 }, { passive: true });
 
+// ---------- INTERACTIVE DISH DETAILS ----------
+const dishDetail = document.getElementById('dishDetail');
+const detailImage = document.getElementById('detailImage');
+const detailCategory = document.getElementById('detailCategory');
+const detailName = document.getElementById('detailName');
+const detailDescription = document.getElementById('detailDescription');
+const detailBack = document.getElementById('detailBack');
+
+function closeDishDetail() {
+    dishDetail.classList.remove('is-open');
+    dishDetail.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('detail-is-open');
+}
+
+document.querySelectorAll('.dish-card').forEach(card => {
+    card.addEventListener('click', () => {
+        detailImage.src = card.dataset.image;
+        detailImage.alt = card.querySelector('img').alt;
+        detailCategory.textContent = card.dataset.category;
+        detailName.textContent = card.dataset.name;
+        detailDescription.textContent = card.dataset.description;
+        dishDetail.classList.add('is-open');
+        dishDetail.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('detail-is-open');
+    });
+});
+
+detailBack.addEventListener('click', closeDishDetail);
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && dishDetail.classList.contains('is-open')) closeDishDetail();
+});
+

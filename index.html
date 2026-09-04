@@ -98,6 +98,62 @@
       que você tiver fotos reais do restaurante, é só me enviar que eu substituo tudo.</p>
   </section>
 
+  <!-- ================= EXPERIENCIA DO CARDAPIO ================= -->
+  <section class="dish-experience" id="pratos">
+    <div class="menu-head wrap">
+      <p class="section-kicker">Escolha uma experiência</p>
+      <h2 class="tracked">Pratos da casa</h2>
+      <div class="divider"><span class="dot"></span></div>
+    </div>
+
+    <div class="dish-grid" id="dishGrid">
+      <button class="dish-card" type="button" data-category="Petiscos" data-name="Filé acebolado"
+        data-description="Filé acebolado no ponto, servido com batata frita e o tempero especial da casa."
+        data-image="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&amp;fit=crop&amp;w=900&amp;q=85">
+        <span class="dish-image-wrap"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&amp;fit=crop&amp;w=500&amp;q=85"
+            alt="Filé acebolado servido em um prato" loading="lazy"></span>
+        <span class="dish-name">Filé acebolado</span>
+      </button>
+      <button class="dish-card" type="button" data-category="Massas artesanais" data-name="Ravioli artesanal"
+        data-description="Massa fresca recheada, preparada artesanalmente e finalizada com molho da casa."
+        data-image="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&amp;fit=crop&amp;w=900&amp;q=85">
+        <span class="dish-image-wrap"><img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&amp;fit=crop&amp;w=500&amp;q=85"
+            alt="Ravioli artesanal com molho" loading="lazy"></span>
+        <span class="dish-name">Ravioli artesanal</span>
+      </button>
+      <button class="dish-card" type="button" data-category="Pratos para dois" data-name="Baião de dois"
+        data-description="Uma combinação generosa de sabores regionais, feita para compartilhar bons momentos."
+        data-image="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&amp;fit=crop&amp;w=900&amp;q=85">
+        <span class="dish-image-wrap"><img src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&amp;fit=crop&amp;w=500&amp;q=85"
+            alt="Prato regional servido à mesa" loading="lazy"></span>
+        <span class="dish-name">Baião de dois</span>
+      </button>
+      <button class="dish-card" type="button" data-category="Sobremesas" data-name="Petit gâteau"
+        data-description="Sobremesa quente com interior cremoso, acompanhada de sorvete e calda."
+        data-image="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&amp;fit=crop&amp;w=900&amp;q=85">
+        <span class="dish-image-wrap"><img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&amp;fit=crop&amp;w=500&amp;q=85"
+            alt="Petit gâteau com sorvete" loading="lazy"></span>
+        <span class="dish-name">Petit gâteau</span>
+      </button>
+    </div>
+  </section>
+
+  <div class="dish-detail" id="dishDetail" aria-hidden="true">
+    <div class="dish-detail-topbar">
+      <button class="detail-back" id="detailBack" type="button" aria-label="Voltar para os pratos">&#8592;</button>
+      <span class="detail-brand">Quintal das Massas</span>
+      <button class="detail-search" type="button" aria-label="Buscar pratos">&#8981;</button>
+    </div>
+    <div class="detail-hero">
+      <img id="detailImage" src="" alt="">
+    </div>
+    <div class="detail-info">
+      <p class="detail-category" id="detailCategory"></p>
+      <h2 id="detailName"></h2>
+      <p id="detailDescription"></p>
+    </div>
+  </div>
+
   <!-- ================= CARDÁPIO ================= -->
   <section class="menu-section" id="cardapio">
     <div class="menu-head wrap">
