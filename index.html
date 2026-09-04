@@ -29,9 +29,6 @@
         <li><a href="#cardapio">Cardápio</a></li>
         <li><a href="#contato">Contato</a></li>
       </ul>
-      <button class="nav-cart-btn" onclick="openCart()">
-        Pedido <span class="cart-count hidden" id="navCartCount">0</span>
-      </button>
     </div>
   </nav>
 
@@ -144,33 +141,6 @@
   <footer>
     Quintal das Massas · Chef Fabi — Jardim, MS
   </footer>
-
-  <!-- ================= CARRINHO FLUTUANTE ================= -->
-  <button class="floating-cart hidden" id="floatingCart" onclick="openCart()">
-    🛒 <span id="floatingCartText">Ver pedido</span>
-  </button>
-
-  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-  <aside class="cart-drawer" id="cartDrawer">
-    <div class="cart-header">
-      <h3>Seu pedido</h3>
-      <button class="cart-close" onclick="closeCart()">&times;</button>
-    </div>
-    <div class="cart-items" id="cartItemsWrap">
-      <div class="cart-empty">Seu pedido está vazio.<br>Adicione itens do cardápio.</div>
-    </div>
-    <div class="cart-footer">
-      <div class="cart-total-row">
-        <span>Total</span>
-        <span id="cartTotal">R$ 0,00</span>
-      </div>
-      <div class="cart-note">O pedido será enviado por WhatsApp para confirmação, forma de entrega/retirada e pagamento.
-      </div>
-      <button class="whatsapp-btn" id="sendBtn" onclick="sendToWhatsapp()" disabled>
-        Enviar pedido no WhatsApp
-      </button>
-    </div>
-  </aside>
 
   <script src="js/main.js"></script>
 

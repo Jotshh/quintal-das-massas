@@ -1,6 +1,4 @@
 // ---------- DADOS DO CARDÁPIO ----------
-const WHATSAPP_NUMBER = "5567992959371"; // 55 + DDD 67 + número
-
 const icons = {
     petiscos: '<path d="M12 3v9M12 3c-2 0-3 1.5-3 3.5S10 12 12 12s3-2 3-5.5S14 3 12 3z"/><path d="M12 12v9"/>',
     jantinha: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/>',
@@ -171,25 +169,15 @@ const tabsWrap = document.getElementById('catTabs');
 const menuContent = document.getElementById('menuContent');
 let itemCounter = 0;
 
-function money(v) {
-    return v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
 function renderItemRow(item) {
-    itemCounter++;
-    const uid = 'item_' + itemCounter;
-    item._uid = uid;
     return `
       <div class="item-row">
         <div class="item-main">
           <div class="item-title-line">
             <span class="item-name">${item.name}</span>
-            <span class="item-dots"></span>
-            <span class="item-price">R$ ${money(item.price)}</span>
           </div>
           ${item.desc ? `<div class="item-desc">${item.desc}</div>` : ``}
         </div>
-        <button class="item-add" aria-label="Adicionar ${item.name}" data-uid="${uid}">+</button>
       </div>
     `;
 }
@@ -228,13 +216,6 @@ menu.forEach((cat, idx) => {
     menuContent.appendChild(block);
 });
 
-// registry of all items by uid for cart logic
-const itemRegistry = {};
-menu.forEach(cat => {
-    (cat.items || []).forEach(it => itemRegistry[it._uid] = it);
-    (cat.subgroups || []).forEach(sg => sg.items.forEach(it => itemRegistry[it._uid] = it));
-});
-
 // highlight active tab on scroll
 const catBlocks = menu.map(c => document.getElementById('cat-' + c.id));
 const tabButtons = Array.from(tabsWrap.children);
@@ -246,113 +227,3 @@ window.addEventListener('scroll', () => {
     tabButtons.forEach((b, i) => b.classList.toggle('active', i === activeIdx));
 }, { passive: true });
 
-// ---------- CARRINHO ----------
-const cart = {}; // uid -> qty
-
-function addToCart(uid) {
-    cart[uid] = (cart[uid] || 0) + 1;
-    renderCart();
-}
-function changeQty(uid, delta) {
-    if (!cart[uid]) return;
-    cart[uid] += delta;
-    if (cart[uid] <= 0) delete cart[uid];
-    renderCart();
-}
-
-menuContent.addEventListener('click', (e) => {
-    const btn = e.target.closest('.item-add');
-    if (!btn) return;
-    addToCart(btn.dataset.uid);
-    btn.textContent = '✓';
-    setTimeout(() => { btn.textContent = '+'; }, 500);
-});
-
-function renderCart() {
-    const wrap = document.getElementById('cartItemsWrap');
-    const uids = Object.keys(cart);
-    let total = 0;
-    let count = 0;
-
-    if (uids.length === 0) {
-        wrap.innerHTML = `<div class="cart-empty">Seu pedido está vazio.<br>Adicione itens do cardápio.</div>`;
-    } else {
-        wrap.innerHTML = uids.map(uid => {
-            const item = itemRegistry[uid];
-            const qty = cart[uid];
-            total += item.price * qty;
-            count += qty;
-            return `
-          <div class="cart-line">
-            <div class="cart-line-info">
-              <div class="cart-line-name">${item.name}</div>
-              <div class="cart-line-price">R$ ${money(item.price)} un.</div>
-            </div>
-            <div class="qty-control">
-              <button class="qty-btn" data-uid="${uid}" data-delta="-1">−</button>
-              <span class="qty-num">${qty}</span>
-              <button class="qty-btn" data-uid="${uid}" data-delta="1">+</button>
-            </div>
-          </div>
-        `;
-        }).join('');
-    }
-
-    document.getElementById('cartTotal').textContent = 'R$ ' + money(total);
-    document.getElementById('sendBtn').disabled = count === 0;
-
-    const navCount = document.getElementById('navCartCount');
-    const floating = document.getElementById('floatingCart');
-    const floatingText = document.getElementById('floatingCartText');
-
-    if (count > 0) {
-        navCount.textContent = count;
-        navCount.classList.remove('hidden');
-        floating.classList.remove('hidden');
-        floatingText.textContent = `Ver pedido · R$ ${money(total)}`;
-    } else {
-        navCount.classList.add('hidden');
-        floating.classList.add('hidden');
-    }
-}
-
-document.getElementById('cartItemsWrap').addEventListener('click', (e) => {
-    const btn = e.target.closest('.qty-btn');
-    if (!btn) return;
-    changeQty(btn.dataset.uid, parseInt(btn.dataset.delta, 10));
-});
-
-function openCart() {
-    document.getElementById('cartDrawer').classList.add('open');
-    document.getElementById('cartOverlay').classList.add('open');
-}
-function closeCart() {
-    document.getElementById('cartDrawer').classList.remove('open');
-    document.getElementById('cartOverlay').classList.remove('open');
-}
-
-function sendToWhatsapp() {
-    const uids = Object.keys(cart);
-    if (uids.length === 0) return;
-
-    let lines = [];
-    lines.push('Olá! Gostaria de fazer o seguinte pedido no *Quintal das Massas*:');
-    lines.push('');
-    let total = 0;
-    uids.forEach(uid => {
-        const item = itemRegistry[uid];
-        const qty = cart[uid];
-        const subtotal = item.price * qty;
-        total += subtotal;
-        lines.push(`• ${qty}x ${item.name} — R$ ${money(subtotal)}`);
-    });
-    lines.push('');
-    lines.push(`*Total: R$ ${money(total)}*`);
-    lines.push('');
-    lines.push('Aguardo confirmação da forma de entrega/retirada e pagamento. Obrigado!');
-
-    const text = encodeURIComponent(lines.join('\n'));
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, '_blank');
-}
-
-renderCart();
