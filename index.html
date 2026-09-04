@@ -154,6 +154,55 @@
     </div>
   </div>
 
+  <!-- ================= CARROSSEL DE PRATOS ================= -->
+  <section class="dish-carousel-section" id="carrossel-pratos">
+    <div class="carousel-topbar">
+      <button class="carousel-back" type="button" aria-label="Voltar para os cards" onclick="document.getElementById('pratos').scrollIntoView({ behavior: 'smooth' })">&#8592;</button>
+      <div>
+        <p class="section-kicker">Uma seleção do quintal</p>
+        <h2>Nossas massas</h2>
+      </div>
+      <span class="carousel-mark" aria-hidden="true">✦</span>
+    </div>
+
+    <div class="carousel-viewport" id="dishCarousel" tabindex="0" aria-label="Carrossel de pratos">
+      <div class="carousel-track">
+        <article class="carousel-slide" data-category="Massas artesanais" data-name="Ravioli artesanal"
+          data-description="Massa fresca recheada, preparada artesanalmente e finalizada com molho da casa.">
+          <div class="carousel-image"><img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&amp;fit=crop&amp;w=800&amp;q=85" alt="Ravioli artesanal com molho" loading="lazy"></div>
+        </article>
+        <article class="carousel-slide" data-category="Massas artesanais" data-name="Pappardelle da casa"
+          data-description="Fios largos de massa fresca envolvidos em um molho encorpado, com ervas e sabor de comida feita à mão.">
+          <div class="carousel-image"><img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&amp;fit=crop&amp;w=800&amp;q=85" alt="Pappardelle da casa" loading="lazy"></div>
+        </article>
+        <article class="carousel-slide" data-category="Pratos para dois" data-name="Nhoque de cabotiá"
+          data-description="Nhoque macio de cabotiá com ragu de fraldinha, preparado lentamente para concentrar o sabor.">
+          <div class="carousel-image"><img src="https://images.unsplash.com/photo-1556761223-4c4282c73f77?auto=format&amp;fit=crop&amp;w=800&amp;q=85" alt="Nhoque servido com molho" loading="lazy"></div>
+        </article>
+        <article class="carousel-slide" data-category="Carnes na pedra" data-name="Carne acebolada na pedra"
+          data-description="Corte macio servido na pedra quente, com cebolas douradas, mandioca e o tempero especial do Quintal.">
+          <div class="carousel-image"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&amp;fit=crop&amp;w=800&amp;q=85" alt="Carne acebolada servida no prato" loading="lazy"></div>
+        </article>
+        <article class="carousel-slide" data-category="Sobremesas" data-name="Petit gâteau"
+          data-description="Sobremesa quente com interior cremoso, acompanhada de sorvete e calda feita para fechar a experiência.">
+          <div class="carousel-image"><img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&amp;fit=crop&amp;w=800&amp;q=85" alt="Petit gâteau com sorvete" loading="lazy"></div>
+        </article>
+      </div>
+    </div>
+
+    <div class="carousel-controls">
+      <button class="carousel-arrow" id="carouselPrev" type="button" aria-label="Prato anterior">&#8592;</button>
+      <div class="carousel-dots" id="carouselDots" aria-label="Selecionar prato"></div>
+      <button class="carousel-arrow" id="carouselNext" type="button" aria-label="Próximo prato">&#8594;</button>
+    </div>
+
+    <div class="carousel-info" id="carouselInfo" aria-live="polite">
+      <p class="carousel-category" id="carouselCategory"></p>
+      <h3 id="carouselName"></h3>
+      <p id="carouselDescription"></p>
+    </div>
+  </section>
+
   <!-- ================= CARDÁPIO ================= -->
   <section class="menu-section" id="cardapio">
     <div class="menu-head wrap">

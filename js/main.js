@@ -259,3 +259,89 @@ document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && dishDetail.classList.contains('is-open')) closeDishDetail();
 });
 
+// ---------- CARROSSEL DE PRATOS ----------
+const carousel = document.getElementById('dishCarousel');
+const carouselTrack = carousel.querySelector('.carousel-track');
+const carouselSlides = Array.from(carousel.querySelectorAll('.carousel-slide'));
+const carouselDots = document.getElementById('carouselDots');
+const carouselCategory = document.getElementById('carouselCategory');
+const carouselName = document.getElementById('carouselName');
+const carouselDescription = document.getElementById('carouselDescription');
+let activeCarouselIndex = 0;
+let isDraggingCarousel = false;
+let carouselDragStart = 0;
+let carouselScrollStart = 0;
+
+carouselSlides.forEach((slide, index) => {
+    const dot = document.createElement('button');
+    dot.className = 'carousel-dot';
+    dot.type = 'button';
+    dot.setAttribute('aria-label', `Mostrar ${slide.dataset.name}`);
+    dot.addEventListener('click', () => goToCarouselSlide(index));
+    carouselDots.appendChild(dot);
+});
+
+function updateCarouselInfo(index) {
+    const slide = carouselSlides[index];
+    carouselCategory.textContent = slide.dataset.category;
+    carouselName.textContent = slide.dataset.name;
+    carouselDescription.textContent = slide.dataset.description;
+    carouselCategory.parentElement.classList.remove('is-changing');
+    requestAnimationFrame(() => carouselCategory.parentElement.classList.add('is-changing'));
+    carouselDots.querySelectorAll('.carousel-dot').forEach((dot, dotIndex) => {
+        dot.classList.toggle('is-active', dotIndex === index);
+        dot.setAttribute('aria-current', dotIndex === index ? 'true' : 'false');
+    });
+}
+
+function goToCarouselSlide(index) {
+    activeCarouselIndex = Math.max(0, Math.min(index, carouselSlides.length - 1));
+    carouselSlides[activeCarouselIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    updateCarouselInfo(activeCarouselIndex);
+}
+
+function syncCarousel() {
+    const viewportCenter = carousel.getBoundingClientRect().left + carousel.clientWidth / 2;
+    let nearestIndex = 0;
+    let nearestDistance = Infinity;
+    carouselSlides.forEach((slide, index) => {
+        const distance = Math.abs(slide.getBoundingClientRect().left + slide.offsetWidth / 2 - viewportCenter);
+        if (distance < nearestDistance) {
+            nearestDistance = distance;
+            nearestIndex = index;
+        }
+    });
+    carouselSlides.forEach((slide, index) => slide.classList.toggle('is-active', index === nearestIndex));
+    if (nearestIndex !== activeCarouselIndex) {
+        activeCarouselIndex = nearestIndex;
+        updateCarouselInfo(nearestIndex);
+    }
+}
+
+carousel.addEventListener('scroll', syncCarousel, { passive: true });
+document.getElementById('carouselPrev').addEventListener('click', () => goToCarouselSlide(activeCarouselIndex - 1));
+document.getElementById('carouselNext').addEventListener('click', () => goToCarouselSlide(activeCarouselIndex + 1));
+carousel.addEventListener('pointerdown', event => {
+    isDraggingCarousel = true;
+    carouselDragStart = event.clientX;
+    carouselScrollStart = carousel.scrollLeft;
+    carouselTrack.classList.add('is-dragging');
+    carousel.setPointerCapture(event.pointerId);
+});
+carousel.addEventListener('pointermove', event => {
+    if (!isDraggingCarousel) return;
+    carousel.scrollLeft = carouselScrollStart - (event.clientX - carouselDragStart);
+});
+carousel.addEventListener('pointerup', event => {
+    isDraggingCarousel = false;
+    carouselTrack.classList.remove('is-dragging');
+    carousel.releasePointerCapture(event.pointerId);
+    goToCarouselSlide(activeCarouselIndex);
+});
+carousel.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft') goToCarouselSlide(activeCarouselIndex - 1);
+    if (event.key === 'ArrowRight') goToCarouselSlide(activeCarouselIndex + 1);
+});
+updateCarouselInfo(0);
+requestAnimationFrame(() => goToCarouselSlide(0));
+
