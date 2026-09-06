@@ -1,3 +1,5 @@
+document.documentElement.classList.add('js');
+
 // ---------- DADOS DO CARDÁPIO ----------
 const icons = {
     petiscos: '<path d="M12 3v9M12 3c-2 0-3 1.5-3 3.5S10 12 12 12s3-2 3-5.5S14 3 12 3z"/><path d="M12 12v9"/>',
@@ -306,6 +308,9 @@ function syncCarousel() {
     let nearestDistance = Infinity;
     carouselSlides.forEach((slide, index) => {
         const distance = Math.abs(slide.getBoundingClientRect().left + slide.offsetWidth / 2 - viewportCenter);
+        const influence = Math.max(0, 1 - distance / (carousel.clientWidth * .72));
+        slide.style.setProperty('--slide-scale', (.8 + influence * .35).toFixed(3));
+        slide.style.setProperty('--slide-opacity', (.58 + influence * .42).toFixed(3));
         if (distance < nearestDistance) {
             nearestDistance = distance;
             nearestIndex = index;
@@ -326,6 +331,7 @@ carousel.addEventListener('pointerdown', event => {
     carouselDragStart = event.clientX;
     carouselScrollStart = carousel.scrollLeft;
     carouselTrack.classList.add('is-dragging');
+    carousel.classList.add('is-dragging');
     carousel.setPointerCapture(event.pointerId);
 });
 carousel.addEventListener('pointermove', event => {
@@ -335,7 +341,18 @@ carousel.addEventListener('pointermove', event => {
 carousel.addEventListener('pointerup', event => {
     isDraggingCarousel = false;
     carouselTrack.classList.remove('is-dragging');
+    carousel.classList.remove('is-dragging');
     carousel.releasePointerCapture(event.pointerId);
+    syncCarousel();
+    goToCarouselSlide(activeCarouselIndex);
+});
+carousel.addEventListener('pointercancel', event => {
+    if (!isDraggingCarousel) return;
+    isDraggingCarousel = false;
+    carouselTrack.classList.remove('is-dragging');
+    carousel.classList.remove('is-dragging');
+    carousel.releasePointerCapture(event.pointerId);
+    syncCarousel();
     goToCarouselSlide(activeCarouselIndex);
 });
 carousel.addEventListener('keydown', event => {
@@ -344,4 +361,60 @@ carousel.addEventListener('keydown', event => {
 });
 updateCarouselInfo(0);
 requestAnimationFrame(() => goToCarouselSlide(0));
+
+// ---------- SCROLL ANIMATIONS ----------
+const siteNav = document.querySelector('.site-nav');
+const revealSelectors = [
+    '.about h2',
+    '.about .divider',
+    '.gallery .menu-head h2',
+    '.gallery .menu-head .divider',
+    '.dish-experience .menu-head h2',
+    '.dish-experience .menu-head .divider',
+    '.dish-carousel-section .carousel-topbar h2',
+    '.dish-carousel-section .carousel-mark',
+    '.menu-section .menu-head h2',
+    '.menu-section .menu-head .divider',
+    '.contact h2',
+    '.contact .divider'
+];
+
+revealSelectors.forEach(selector => {
+    document.querySelectorAll(selector).forEach(element => element.classList.add('reveal-up'));
+});
+
+document.querySelectorAll('.gallery-grid .ph-card, .dish-card, .carousel-slide').forEach((element, index) => {
+    element.classList.add('reveal-cascade', 'reveal');
+    element.style.setProperty('--reveal-delay', `${(index % 6) * 90}ms`);
+});
+
+document.querySelectorAll('.gallery-grid .ph-card, .dish-card .dish-image-wrap, .carousel-image').forEach(element => {
+    element.classList.add('reveal-zoom');
+});
+
+document.querySelectorAll('.contact-grid .contact-item').forEach((element, index) => {
+    element.classList.add(index % 2 === 0 ? 'reveal-left' : 'reveal-right');
+});
+document.querySelector('.map-wrap')?.classList.add('reveal-right');
+
+document.querySelectorAll('.reveal-up').forEach(element => element.classList.add('reveal'));
+
+const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+    });
+}, { rootMargin: '0px 0px -60px 0px', threshold: 0.12 });
+
+document.querySelectorAll('.reveal, .reveal-zoom, .reveal-left, .reveal-right').forEach(element => {
+    revealObserver.observe(element);
+});
+
+function updateNavState() {
+    siteNav.classList.toggle('is-scrolled', window.scrollY > 50);
+}
+
+window.addEventListener('scroll', updateNavState, { passive: true });
+updateNavState();
 

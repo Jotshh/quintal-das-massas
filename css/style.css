@@ -95,6 +95,18 @@ h3 {
     padding-top: 12px;
     padding-bottom: 12px;
     max-width: 1040px;
+    transition: padding .25s ease;
+}
+
+.site-nav.is-scrolled {
+    background: rgba(239, 225, 198, 0.78);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.site-nav.is-scrolled .wrap {
+    padding-top: 7px;
+    padding-bottom: 7px;
 }
 
 .brand {
@@ -146,6 +158,43 @@ h3 {
 
 .nav-links a:hover {
     border-color: var(--bronze);
+}
+
+/* ---------- SCROLL REVEALS ---------- */
+.js .reveal {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+    transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+}
+
+.js .reveal-zoom {
+    opacity: 0;
+    transform: scale(.92);
+    transition: opacity .65s ease, transform .7s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+}
+
+.js .reveal-left,
+.js .reveal-right {
+    opacity: 0;
+    transform: translate3d(-36px, 0, 0);
+    transition: opacity .75s ease, transform .75s cubic-bezier(.2, .7, .2, 1);
+    will-change: opacity, transform;
+}
+
+.js .reveal-right {
+    transform: translate3d(36px, 0, 0);
+}
+
+.js .reveal.is-visible,
+.js .reveal-zoom.is-visible,
+.js .reveal-left.is-visible,
+.js .reveal-right.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
 }
 
 /* ---------- HERO ---------- */
@@ -528,6 +577,7 @@ h3 {
     overscroll-behavior-x: contain;
     cursor: grab;
     touch-action: pan-y;
+    scroll-behavior: smooth;
 }
 
 .carousel-viewport::-webkit-scrollbar {
@@ -550,21 +600,25 @@ h3 {
     cursor: grabbing;
 }
 
+.carousel-viewport.is-dragging {
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+}
+
 .carousel-slide {
     display: grid;
     place-items: center;
     width: var(--carousel-card);
     min-width: var(--carousel-card);
     scroll-snap-align: center;
-    opacity: .58;
-    transform: scale(.8);
-    transition: transform .35s ease, opacity .35s ease;
+    opacity: var(--slide-opacity, .58);
+    transform: scale(var(--slide-scale, .8));
+    transition: transform .5s cubic-bezier(.2, .75, .2, 1), opacity .5s ease;
+    will-change: transform, opacity;
     user-select: none;
 }
 
 .carousel-slide.is-active {
-    opacity: 1;
-    transform: scale(1.15);
     z-index: 1;
 }
 
@@ -1031,4 +1085,41 @@ footer {
         font-size: 17px;
     }
 
+}
+
+@media (min-width: 641px) {
+    .js .contact-grid .reveal-left,
+    .js .contact-grid .reveal-right,
+    .js .map-wrap.reveal-left,
+    .js .map-wrap.reveal-right {
+        transition-duration: .8s;
+    }
+}
+
+@media (max-width: 640px) {
+    .js .contact-grid .reveal-left,
+    .js .contact-grid .reveal-right,
+    .js .map-wrap.reveal-left,
+    .js .map-wrap.reveal-right {
+        transform: translate3d(0, 24px, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .js .reveal,
+    .js .reveal-zoom,
+    .js .reveal-left,
+    .js .reveal-right {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .site-nav .wrap {
+        transition: none;
+    }
 }
