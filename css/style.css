@@ -9,6 +9,7 @@
     --marigold: #f0a63c;
     --line: rgba(42, 33, 24, 0.18);
     --maxw: 880px;
+    --nav-height: 61px;
 }
 
 * {
@@ -22,6 +23,7 @@ html {
 
 body {
     margin: 0;
+    padding-top: var(--nav-height);
     overflow-x: hidden;
     background: var(--cream);
     color: var(--ink);
@@ -82,11 +84,16 @@ h3 {
 
 /* ---------- HEADER / NAV ---------- */
 .site-nav {
-    position: sticky;
+    position: fixed;
     top: 0;
-    z-index: 50;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    z-index: 1000;
     background: rgba(239, 225, 198, 0.94);
     backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 2px 14px rgba(42, 33, 24, 0.1);
     border-bottom: 1px solid var(--line);
 }
 
@@ -94,6 +101,7 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 100%;
     padding-top: 12px;
     padding-bottom: 12px;
     max-width: 1040px;
@@ -141,7 +149,12 @@ h3 {
 }
 
 .nav-links {
+    position: fixed;
+    top: 0;
+    right: max(28px, calc((100vw - 1040px) / 2));
+    height: var(--nav-height);
     display: flex;
+    align-items: center;
     gap: 26px;
     list-style: none;
     margin: 0;
@@ -1222,13 +1235,17 @@ footer {
 }
 
 @media (max-width: 640px) {
+    :root {
+        --nav-height: 69px;
+    }
+
     .site-nav {
-        z-index: 70;
+        z-index: 1000;
     }
 
     .menu-toggle {
         position: relative;
-        z-index: 72;
+        z-index: 1003;
         display: flex;
         width: 44px;
         height: 44px;
@@ -1273,7 +1290,7 @@ footer {
     .menu-backdrop {
         position: fixed;
         inset: 0;
-        z-index: 90;
+        z-index: 1001;
         display: block;
         background: rgba(42, 33, 24, .48);
         opacity: 0;
@@ -1289,7 +1306,7 @@ footer {
         top: 0;
         right: 0;
         left: auto;
-        z-index: 95;
+        z-index: 1002;
         display: flex;
         width: min(82vw, 340px);
         height: 100dvh;
@@ -1354,7 +1371,7 @@ footer {
 
     .site-nav .wrap {
         position: relative;
-        z-index: 71;
+        z-index: 1003;
     }
 
     .hero {
