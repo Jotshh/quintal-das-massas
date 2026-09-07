@@ -1207,12 +1207,21 @@ h3 {
 }
 
 .contact-item .label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     font-family: 'Marcellus', serif;
     font-size: 13px;
     letter-spacing: 0.16em;
     color: var(--bronze-dark);
     text-transform: uppercase;
     margin-bottom: 6px;
+}
+
+.contact-item .label i {
+    font-size: 15px;
+    color: var(--bronze);
 }
 
 .contact-item .value {
