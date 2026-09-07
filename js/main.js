@@ -407,9 +407,87 @@ const revealObserver = new IntersectionObserver(entries => {
     });
 }, { rootMargin: '0px 0px -60px 0px', threshold: 0.12 });
 
-document.querySelectorAll('.reveal, .reveal-zoom, .reveal-left, .reveal-right').forEach(element => {
+document.querySelectorAll('.reveal-zoom, .reveal-left, .reveal-right').forEach(element => {
     revealObserver.observe(element);
 });
+
+// ---------- GSAP SCROLL EXPERIENCES ----------
+if (window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.utils.toArray('.reveal').forEach(element => {
+        gsap.fromTo(element,
+            { autoAlpha: 0, y: 30 },
+            {
+                autoAlpha: 1,
+                y: 0,
+                duration: .8,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: element,
+                    start: 'top 80%',
+                    once: true
+                }
+            }
+        );
+    });
+
+    const splitImage = document.querySelector('.split-image');
+    const splitLabel = document.querySelector('.split-image-label');
+    const splitSteps = gsap.utils.toArray('.split-step');
+
+    splitSteps.forEach((step, index) => {
+        ScrollTrigger.create({
+            trigger: step,
+            start: 'top 55%',
+            end: 'bottom 45%',
+            onEnter: () => updateSplitImage(step),
+            onEnterBack: () => updateSplitImage(step)
+        });
+
+        if (index === 0) updateSplitImage(step);
+    });
+
+    function updateSplitImage(step) {
+        if (!splitImage || splitImage.src === step.dataset.image) return;
+        gsap.to(splitImage, {
+            autoAlpha: 0,
+            duration: .2,
+            onComplete: () => {
+                splitImage.src = step.dataset.image;
+                splitImage.alt = step.dataset.alt;
+                gsap.to(splitImage, { autoAlpha: 1, duration: .55, ease: 'power2.out' });
+            }
+        });
+        if (splitLabel) {
+            gsap.to(splitLabel, { autoAlpha: 0, duration: .15, onComplete: () => {
+                splitLabel.textContent = step.querySelector('h3').textContent;
+                gsap.to(splitLabel, { autoAlpha: 1, duration: .3 });
+            } });
+        }
+    }
+
+    const horizontalSection = document.querySelector('.horizontal-scroll');
+    const horizontalTrack = document.querySelector('.horizontal-track');
+
+    if (horizontalSection && horizontalTrack && window.matchMedia('(min-width: 641px)').matches) {
+        const horizontalDistance = () => Math.max(0, horizontalTrack.scrollWidth - window.innerWidth + 40);
+
+        gsap.to(horizontalTrack, {
+            x: () => -horizontalDistance(),
+            ease: 'none',
+            scrollTrigger: {
+                trigger: horizontalSection,
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 1,
+                pin: '.horizontal-pin',
+                invalidateOnRefresh: true,
+                anticipatePin: 1
+            }
+        });
+    }
+}
 
 function updateNavState() {
     siteNav.classList.toggle('is-scrolled', window.scrollY > 50);
