@@ -1,5 +1,41 @@
 document.documentElement.classList.add('js');
 
+// ---------- MOBILE NAVIGATION ----------
+const menuToggle = document.querySelector('.menu-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+const menuBackdrop = document.querySelector('.menu-backdrop');
+const mobileMenuLinks = mobileMenu ? Array.from(mobileMenu.querySelectorAll('a')) : [];
+let menuTrigger = null;
+
+function closeMobileMenu() {
+    if (!menuToggle || !document.body.classList.contains('menu-open')) return;
+    document.body.classList.remove('menu-open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Abrir menu');
+    menuTrigger?.focus();
+}
+
+function openMobileMenu() {
+    if (!menuToggle) return;
+    menuTrigger = document.activeElement;
+    document.body.classList.add('menu-open');
+    menuToggle.setAttribute('aria-expanded', 'true');
+    menuToggle.setAttribute('aria-label', 'Fechar menu');
+    mobileMenuLinks[0]?.focus();
+}
+
+menuToggle?.addEventListener('click', () => {
+    if (document.body.classList.contains('menu-open')) closeMobileMenu();
+    else openMobileMenu();
+});
+
+menuBackdrop?.addEventListener('click', closeMobileMenu);
+mobileMenuLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
+
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeMobileMenu();
+});
+
 // ---------- DADOS DO CARDÁPIO ----------
 const icons = {
     petiscos: '<path d="M12 3v9M12 3c-2 0-3 1.5-3 3.5S10 12 12 12s3-2 3-5.5S14 3 12 3z"/><path d="M12 12v9"/>',
