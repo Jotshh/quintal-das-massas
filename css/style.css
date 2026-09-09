@@ -333,6 +333,10 @@ h3 {
         grid-column: span 2;
         grid-row: span 1;
     }
+
+    .dish-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ---------- EXPERIENCIA INTERATIVA ---------- */
@@ -364,6 +368,11 @@ h3 {
 }
 
 .dish-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
     min-width: 0;
     padding: 22px 14px 20px;
     border: 1px solid rgba(42, 33, 24, 0.1);
@@ -371,7 +380,9 @@ h3 {
     background: rgba(255, 253, 248, 0.75);
     color: var(--ink);
     font: inherit;
+    text-align: center;
     cursor: pointer;
+    box-sizing: border-box;
     transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
 }
 
@@ -384,8 +395,10 @@ h3 {
 }
 
 .dish-image-wrap {
-    display: block;
-    width: min(150px, 72vw);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(128px, 60vw);
     aspect-ratio: 1;
     margin: 0 auto 18px;
     border-radius: 50%;
@@ -395,8 +408,11 @@ h3 {
 }
 
 .dish-image-wrap img {
+    display: block;
     width: 100%;
     height: 100%;
+    margin: 0 auto;
+    border-radius: 50%;
     object-fit: cover;
     transition: transform .35s ease;
 }
@@ -408,6 +424,7 @@ h3 {
 
 .dish-name {
     display: block;
+    width: 100%;
     font-family: 'Marcellus', serif;
     font-size: 17px;
     line-height: 1.25;
@@ -626,19 +643,23 @@ h3 {
 }
 
 .carousel-slide {
+    --slide-scale: 0.85;
+    --slide-opacity: 0.6;
     display: grid;
     place-items: center;
     width: var(--carousel-card);
     min-width: var(--carousel-card);
     scroll-snap-align: center;
-    opacity: var(--slide-opacity, .58);
-    transform: scale(var(--slide-scale, .8));
-    transition: transform .5s cubic-bezier(.2, .75, .2, 1), opacity .5s ease;
+    opacity: var(--slide-opacity);
+    transform: scale(var(--slide-scale));
+    transition: transform 0.3s ease, opacity 0.3s ease;
     will-change: transform, opacity;
     user-select: none;
 }
 
 .carousel-slide.is-active {
+    --slide-scale: 1.15;
+    --slide-opacity: 1;
     z-index: 1;
 }
 

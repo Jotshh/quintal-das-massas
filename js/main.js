@@ -342,17 +342,23 @@ function syncCarousel() {
     const viewportCenter = carousel.getBoundingClientRect().left + carousel.clientWidth / 2;
     let nearestIndex = 0;
     let nearestDistance = Infinity;
+
     carouselSlides.forEach((slide, index) => {
         const distance = Math.abs(slide.getBoundingClientRect().left + slide.offsetWidth / 2 - viewportCenter);
-        const influence = Math.max(0, 1 - distance / (carousel.clientWidth * .72));
-        slide.style.setProperty('--slide-scale', (.8 + influence * .35).toFixed(3));
-        slide.style.setProperty('--slide-opacity', (.58 + influence * .42).toFixed(3));
+
         if (distance < nearestDistance) {
             nearestDistance = distance;
             nearestIndex = index;
         }
     });
-    carouselSlides.forEach((slide, index) => slide.classList.toggle('is-active', index === nearestIndex));
+
+    carouselSlides.forEach((slide, index) => {
+        const isActive = index === nearestIndex;
+        slide.classList.toggle('is-active', isActive);
+        slide.style.setProperty('--slide-scale', isActive ? '1.15' : '0.85');
+        slide.style.setProperty('--slide-opacity', isActive ? '1' : '0.6');
+    });
+
     if (nearestIndex !== activeCarouselIndex) {
         activeCarouselIndex = nearestIndex;
         updateCarouselInfo(nearestIndex);
