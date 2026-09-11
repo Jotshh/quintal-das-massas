@@ -1,5 +1,18 @@
 document.documentElement.classList.add('js');
 
+const backToTopButton = document.getElementById('backToTop');
+
+function toggleBackToTopButton() {
+    if (!backToTopButton) return;
+    backToTopButton.classList.toggle('is-visible', window.scrollY > 300);
+}
+
+window.addEventListener('scroll', toggleBackToTopButton, { passive: true });
+
+backToTopButton?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
 // ---------- MOBILE NAVIGATION ----------
 const menuToggle = document.querySelector('.menu-toggle');
 const mobileMenu = document.getElementById('mobile-menu');

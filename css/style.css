@@ -1256,6 +1256,46 @@ h3 {
     border-bottom: 1px solid var(--bronze);
 }
 
+.back-to-top {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgba(42, 33, 24, 0.2);
+    border-radius: 50%;
+    background: rgba(239, 225, 198, 0.96);
+    box-shadow: 0 10px 24px rgba(42, 33, 24, 0.15);
+    color: var(--ink);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12px) scale(0.96);
+    transition: opacity .25s ease, transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+
+.back-to-top i {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.back-to-top.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+.back-to-top:hover,
+.back-to-top:focus-visible {
+    background: rgba(247, 239, 220, 1);
+    box-shadow: 0 16px 28px rgba(42, 33, 24, 0.18);
+    transform: translateY(-3px);
+    outline: none;
+}
+
 footer {
     text-align: center;
     padding: 26px 20px 34px;
