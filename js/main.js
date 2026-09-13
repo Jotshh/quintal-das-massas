@@ -278,18 +278,20 @@ window.addEventListener('scroll', () => {
     tabButtons.forEach((b, i) => b.classList.toggle('active', i === activeIdx));
 }, { passive: true });
 
-// ---------- INTERACTIVE DISH DETAILS ----------
+// ---------- LIGHTBOX DE PRATOS ----------
 const dishDetail = document.getElementById('dishDetail');
 const detailImage = document.getElementById('detailImage');
 const detailCategory = document.getElementById('detailCategory');
 const detailName = document.getElementById('detailName');
 const detailDescription = document.getElementById('detailDescription');
-const detailBack = document.getElementById('detailBack');
+const detailClose = document.getElementById('detailClose');
+let previousBodyOverflow = '';
 
 function closeDishDetail() {
     dishDetail.classList.remove('is-open');
     dishDetail.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('detail-is-open');
+    document.body.style.overflow = previousBodyOverflow;
 }
 
 document.querySelectorAll('.dish-card').forEach(card => {
@@ -299,13 +301,22 @@ document.querySelectorAll('.dish-card').forEach(card => {
         detailCategory.textContent = card.dataset.category;
         detailName.textContent = card.dataset.name;
         detailDescription.textContent = card.dataset.description;
+
+        previousBodyOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        document.body.classList.add('detail-is-open');
         dishDetail.classList.add('is-open');
         dishDetail.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('detail-is-open');
+        detailClose.focus();
     });
 });
 
-detailBack.addEventListener('click', closeDishDetail);
+detailClose.addEventListener('click', closeDishDetail);
+
+dishDetail.addEventListener('click', event => {
+    if (event.target === dishDetail) closeDishDetail();
+});
+
 document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && dishDetail.classList.contains('is-open')) closeDishDetail();
 });

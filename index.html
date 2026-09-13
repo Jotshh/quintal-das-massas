@@ -146,19 +146,18 @@
     </div>
   </section>
 
-  <div class="dish-detail" id="dishDetail" aria-hidden="true">
-    <div class="dish-detail-topbar">
-      <button class="detail-back" id="detailBack" type="button" aria-label="Voltar para os pratos">&#8592;</button>
-      <span class="detail-brand">Quintal das Massas</span>
-      <button class="detail-search" type="button" aria-label="Buscar pratos">&#8981;</button>
-    </div>
-    <div class="detail-hero">
-      <img id="detailImage" src="" alt="">
-    </div>
-    <div class="detail-info">
-      <p class="detail-category" id="detailCategory"></p>
-      <h2 id="detailName"></h2>
-      <p id="detailDescription"></p>
+  <div class="dish-detail" id="dishDetail" aria-hidden="true" role="dialog" aria-modal="true"
+    aria-labelledby="detailName">
+    <div class="dish-detail-panel" role="document">
+      <button class="detail-close" id="detailClose" type="button" aria-label="Fechar visualização">×</button>
+      <div class="detail-hero">
+        <img id="detailImage" src="" alt="">
+      </div>
+      <div class="detail-info">
+        <p class="detail-category" id="detailCategory"></p>
+        <h2 id="detailName"></h2>
+        <p id="detailDescription"></p>
+      </div>
     </div>
   </div>
 
