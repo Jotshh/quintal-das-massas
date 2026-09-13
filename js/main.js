@@ -477,6 +477,43 @@ if (window.gsap && window.ScrollTrigger) {
     const splitLabel = document.querySelector('.split-image-label');
     const splitSteps = gsap.utils.toArray('.split-step');
 
+    function updateSplitImage(step) {
+        if (!splitImage || !step) return;
+
+        const nextImage = step.dataset.image;
+        const nextAlt = step.dataset.alt || '';
+
+        if (!nextImage) return;
+
+        // evita troca repetida quando o mesmo passo continua ativo
+        if (splitImage.dataset.currentImage === nextImage) return;
+
+        splitImage.dataset.currentImage = nextImage;
+
+        gsap.to(splitImage, {
+            autoAlpha: 0,
+            duration: .2,
+            ease: 'power1.out',
+            onComplete: () => {
+                splitImage.src = nextImage;
+                splitImage.alt = nextAlt;
+                gsap.to(splitImage, { autoAlpha: 1, duration: .55, ease: 'power2.out' });
+            }
+        });
+
+        if (splitLabel) {
+            gsap.to(splitLabel, {
+                autoAlpha: 0,
+                duration: .15,
+                ease: 'power1.out',
+                onComplete: () => {
+                    splitLabel.textContent = step.querySelector('h3')?.textContent || '';
+                    gsap.to(splitLabel, { autoAlpha: 1, duration: .3, ease: 'power2.out' });
+                }
+            });
+        }
+    }
+
     splitSteps.forEach((step, index) => {
         ScrollTrigger.create({
             trigger: step,
@@ -489,24 +526,17 @@ if (window.gsap && window.ScrollTrigger) {
         if (index === 0) updateSplitImage(step);
     });
 
-    function updateSplitImage(step) {
-        if (!splitImage || splitImage.src === step.dataset.image) return;
-        gsap.to(splitImage, {
-            autoAlpha: 0,
-            duration: .2,
-            onComplete: () => {
-                splitImage.src = step.dataset.image;
-                splitImage.alt = step.dataset.alt;
-                gsap.to(splitImage, { autoAlpha: 1, duration: .55, ease: 'power2.out' });
-            }
-        });
-        if (splitLabel) {
-            gsap.to(splitLabel, { autoAlpha: 0, duration: .15, onComplete: () => {
-                splitLabel.textContent = step.querySelector('h3').textContent;
-                gsap.to(splitLabel, { autoAlpha: 1, duration: .3 });
-            } });
-        }
-    }
+    window.addEventListener('load', () => {
+        ScrollTrigger.refresh();
+    });
+
+    window.addEventListener('resize', () => {
+        ScrollTrigger.refresh();
+    });
+
+    splitImage?.addEventListener('load', () => {
+        ScrollTrigger.refresh();
+    });
 
     const horizontalSection = document.querySelector('.horizontal-scroll');
     const horizontalTrack = document.querySelector('.horizontal-track');

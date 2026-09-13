@@ -229,7 +229,7 @@ h3 {
     overflow: hidden;
     background:
         linear-gradient(135deg, rgba(22, 18, 14, 0.54), rgba(22, 18, 14, 0.25) 38%, rgba(22, 18, 14, 0.56)),
-        url('https://lh3.googleusercontent.com/gpms-cs-s/AFP8RcOG3Lk_e-Uk-XHNnQ9Trv4n9--ClDdEGY4aSlyaxqecjt6fpmeHXlDICjoHhAmYXZlepy3l6G0z79gindgoyl_xaAmNkMvZ1ExbMX0ZaoIvXrmRfzd-7UTJQLaaQAUP5IFw5T0AKGtCe9w=s2048-k-no-v1') center / cover no-repeat;
+        url('../assets/img/WhatsApp Image 2026-09-09 at 17.46.36.jpeg') center / cover no-repeat;
     isolation: isolate;
 }
 
@@ -955,20 +955,24 @@ h3 {
     margin: 0 auto;
     padding: 120px 40px;
     background: var(--cream-light);
+    position: relative;
 }
 
 .split-media {
     position: sticky;
-    top: 110px;
+    top: 100px;
     height: min(68vh, 620px);
     align-self: start;
+    z-index: 1;
 }
 
 .split-image-frame {
     position: relative;
     height: 100%;
-    overflow: hidden;
+    overflow: visible;
     background: var(--ink);
+    border-radius: 22px;
+    box-shadow: 0 24px 40px rgba(42, 33, 24, 0.18);
 }
 
 .split-image {
@@ -978,6 +982,7 @@ h3 {
     height: 100%;
     object-fit: cover;
     opacity: 0;
+    transition: opacity .35s ease;
 }
 
 .split-image.is-active {
@@ -999,6 +1004,8 @@ h3 {
 
 .split-copy {
     padding: 10vh 0 8vh;
+    position: relative;
+    z-index: 2;
 }
 
 .split-copy h2,
@@ -1011,6 +1018,35 @@ h3 {
     min-height: 58vh;
     padding: 18vh 0 8vh;
     border-top: 1px solid var(--line);
+}
+
+@media (max-width: 640px) {
+    .split-scroll {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 72px 20px;
+    }
+
+    .split-media {
+        position: relative;
+        top: auto;
+        height: auto;
+        z-index: auto;
+    }
+
+    .split-image-frame {
+        height: clamp(220px, 52vw, 320px);
+        overflow: visible;
+    }
+
+    .split-copy {
+        padding: 0;
+    }
+
+    .split-step {
+        min-height: auto;
+        padding: 22px 0;
+    }
 }
 
 .split-step-number {
