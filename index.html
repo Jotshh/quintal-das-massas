@@ -10,6 +10,10 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Marcellus&family=Alex+Brush&display=swap"
     rel="stylesheet">
+  <link rel="preload" as="image"
+    href="assets/img/massa-fresca.jpeg"
+    fetchpriority="high">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
 </head>
@@ -20,7 +24,7 @@
   <nav class="site-nav">
     <div class="wrap">
       <a href="#top" class="brand">
-        <span class="brand-badge"><img src="assets/logo.svg" alt="Logo Quintal das Massas"></span>
+        <span class="brand-badge"><img src="assets/logo.svg" alt="Logo Quintal das Massas" width="48" height="48"></span>
         Quintal das Massas
       </a>
       <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false"
@@ -44,7 +48,7 @@
     <div class="hero-inner">
       <div class="hero-card">
         <div class="logo-circle">
-          <img src="assets/logo.jpg" alt="Logo Quintal das Massas - Chef Fabi">
+          <img src="assets/logo.jpg" alt="Logo Quintal das Massas - Chef Fabi" width="150" height="150" fetchpriority="high">
         </div>
         <p class="kicker">Massas artesanais</p>
         <h1>QUINTAL DAS MASSAS</h1>
@@ -79,23 +83,23 @@
     </div>
     <div class="gallery-grid">
       <div class="ph-card photo-card"
-        style="background-image:url('https://images.unsplash.com/photo-1756831567129-a7f9e6ecb436?fm=jpg&amp;q=70&amp;w=900&amp;auto=format&amp;fit=crop');">
+        style="background-image:url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
         <span class="ph-overlay-label">Ambiente</span>
       </div>
       <div class="ph-card photo-card"
-        style="background-image:url('https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?fm=jpg&amp;q=70&amp;w=700&amp;auto=format&amp;fit=crop');">
+        style="background-image:url('assets/img/massa-da-casa.jpeg');">
         <span class="ph-overlay-label">Massa da casa</span>
       </div>
       <div class="ph-card photo-card"
-        style="background-image:url('https://images.unsplash.com/photo-1600891964092-4316c288032e?fm=jpg&amp;q=70&amp;w=700&amp;auto=format&amp;fit=crop');">
+        style="background-image:url('assets/img/carnes-na-pedra.jpeg');">
         <span class="ph-overlay-label">Carnes na pedra</span>
       </div>
       <div class="ph-card photo-card"
-        style="background-image:url('https://img.magnific.com/fotos-gratis/vista-frontal-do-chef-feminino-posando-e-sorrindo_23-2148491347.jpg?fm=jpg&amp;q=70&amp;w=700&amp;auto=format&amp;fit=crop');">
+        style="background-image:url('https://plus.unsplash.com/premium_photo-1687697860933-d6deb23ca7e9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2hlZmUlMjBtdWxoZXIlMjByZXN0YXVyYW50ZXxlbnwwfHwwfHx8MA%3D%3D');">
         <span class="ph-overlay-label">Chef Fabi</span>
       </div>
       <div class="ph-card photo-card"
-        style="background-image:url('https://images.unsplash.com/photo-1587740908075-9e245070dfaa?fm=jpg&amp;q=70&amp;w=700&amp;auto=format&amp;fit=crop');">
+        style="background-image:url('assets/img/ravioli-artesanal-2.jpeg');">
         <span class="ph-overlay-label">Ravioli artesanal</span>
       </div>
     </div>
@@ -113,52 +117,51 @@
     <div class="dish-grid" id="dishGrid">
       <button class="dish-card" type="button" data-category="Petiscos" data-name="Filé acebolado"
         data-description="Filé acebolado no ponto, servido com batata frita e o tempero especial da casa."
-        data-image="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&amp;fit=crop&amp;w=900&amp;q=85">
+        data-image="assets/img/file-acebolado.jpeg">
         <span class="dish-image-wrap"><img
-            src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&amp;fit=crop&amp;w=500&amp;q=85"
-            alt="Filé acebolado servido em um prato" loading="lazy"></span>
+            src="assets/img/file-acebolado.jpeg"
+            alt="Filé acebolado servido em um prato" loading="lazy" decoding="async"></span>
         <span class="dish-name">Filé acebolado</span>
       </button>
       <button class="dish-card" type="button" data-category="Massas artesanais" data-name="Ravioli artesanal"
         data-description="Massa fresca recheada, preparada artesanalmente e finalizada com molho da casa."
-        data-image="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&amp;fit=crop&amp;w=900&amp;q=85">
+        data-image="assets/img/ravioli-artesanal.jpeg">
         <span class="dish-image-wrap"><img
-            src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&amp;fit=crop&amp;w=500&amp;q=85"
-            alt="Ravioli artesanal com molho" loading="lazy"></span>
+            src="assets/img/ravioli-artesanal.jpeg"
+            alt="Ravioli artesanal com molho" loading="lazy" decoding="async"></span>
         <span class="dish-name">Ravioli artesanal</span>
       </button>
       <button class="dish-card" type="button" data-category="Pratos para dois" data-name="Baião de dois"
         data-description="Uma combinação generosa de sabores regionais, feita para compartilhar bons momentos."
-        data-image="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&amp;fit=crop&amp;w=900&amp;q=85">
+        data-image="assets/img/baiao-de-dois.jpeg">
         <span class="dish-image-wrap"><img
-            src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&amp;fit=crop&amp;w=500&amp;q=85"
-            alt="Prato regional servido à mesa" loading="lazy"></span>
+            src="assets/img/baiao-de-dois.jpeg"
+            alt="Prato regional servido à mesa" loading="lazy" decoding="async"></span>
         <span class="dish-name">Baião de dois</span>
       </button>
       <button class="dish-card" type="button" data-category="Sobremesas" data-name="Petit gâteau"
         data-description="Sobremesa quente com interior cremoso, acompanhada de sorvete e calda."
-        data-image="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&amp;fit=crop&amp;w=900&amp;q=85">
+        data-image="assets/img/petit-gateau.jpeg">
         <span class="dish-image-wrap"><img
-            src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&amp;fit=crop&amp;w=500&amp;q=85"
-            alt="Petit gâteau com sorvete" loading="lazy"></span>
+            src="assets/img/petit-gateau.jpeg"
+            alt="Petit gâteau com sorvete" loading="lazy" decoding="async"></span>
         <span class="dish-name">Petit gâteau</span>
       </button>
     </div>
   </section>
 
-  <div class="dish-detail" id="dishDetail" aria-hidden="true">
-    <div class="dish-detail-topbar">
-      <button class="detail-back" id="detailBack" type="button" aria-label="Voltar para os pratos">&#8592;</button>
-      <span class="detail-brand">Quintal das Massas</span>
-      <button class="detail-search" type="button" aria-label="Buscar pratos">&#8981;</button>
-    </div>
-    <div class="detail-hero">
-      <img id="detailImage" src="" alt="">
-    </div>
-    <div class="detail-info">
-      <p class="detail-category" id="detailCategory"></p>
-      <h2 id="detailName"></h2>
-      <p id="detailDescription"></p>
+  <div class="dish-detail" id="dishDetail" aria-hidden="true" role="dialog" aria-modal="true"
+    aria-labelledby="detailName">
+    <div class="dish-detail-panel" role="document">
+      <button class="detail-close" id="detailClose" type="button" aria-label="Fechar visualização">×</button>
+      <div class="detail-hero">
+        <img id="detailImage" src="" alt="">
+      </div>
+      <div class="detail-info">
+        <p class="detail-category" id="detailCategory"></p>
+        <h2 id="detailName"></h2>
+        <p id="detailDescription"></p>
+      </div>
     </div>
   </div>
 
@@ -174,23 +177,23 @@
       <div class="horizontal-viewport">
         <div class="horizontal-track">
           <article class="horizontal-card reveal"><span>01</span><img
-              src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&amp;fit=crop&amp;w=900&amp;q=85"
-              alt="Pappardelle da casa">
+              src="assets/img/pappardelle-da-casa.jpeg"
+              alt="Pappardelle da casa" loading="lazy" decoding="async">
             <h3>Pappardelle da casa</h3>
           </article>
           <article class="horizontal-card reveal"><span>02</span><img
-              src="https://images.unsplash.com/photo-1556761223-4c4282c73f77?auto=format&amp;fit=crop&amp;w=900&amp;q=85"
-              alt="Nhoque servido com molho">
+              src="assets/img/nhoque.jpeg"
+              alt="Nhoque servido com molho" loading="lazy" decoding="async">
             <h3>Nhoque de cabotiá</h3>
           </article>
           <article class="horizontal-card reveal"><span>03</span><img
-              src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&amp;fit=crop&amp;w=900&amp;q=85"
-              alt="Carne acebolada na pedra">
+              src="assets/img/carne-acebolada.jpeg"
+              alt="Carne acebolada na pedra" loading="lazy" decoding="async">
             <h3>Carne na pedra</h3>
           </article>
           <article class="horizontal-card reveal"><span>04</span><img
-              src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&amp;fit=crop&amp;w=900&amp;q=85"
-              alt="Petit gâteau com sorvete">
+              src="assets/img/petit-gateau.jpeg"
+              alt="Petit gâteau com sorvete" loading="lazy" decoding="async">
             <h3>Petit gâteau</h3>
           </article>
         </div>
@@ -210,37 +213,37 @@
       <span class="carousel-mark" aria-hidden="true">✦</span>
     </div>
 
-    <div class="carousel-viewport" id="dishCarousel" tabindex="0" aria-label="Carrossel de pratos">
-      <div class="carousel-track">
+    <div class="carousel-viewport swiper" id="dishCarousel" tabindex="0" aria-label="Carrossel de pratos">
+      <div class="carousel-track swiper-wrapper">
         <article class="carousel-slide" data-category="Massas artesanais" data-name="Ravioli artesanal"
           data-description="Massa fresca recheada, preparada artesanalmente e finalizada com molho da casa.">
           <div class="carousel-image"><img
-              src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&amp;fit=crop&amp;w=800&amp;q=85"
-              alt="Ravioli artesanal com molho" loading="lazy"></div>
+              src="assets/img/ravioli-artesanal.jpeg"
+              alt="Ravioli artesanal com molho" loading="lazy" decoding="async"></div>
         </article>
         <article class="carousel-slide" data-category="Massas artesanais" data-name="Pappardelle da casa"
           data-description="Fios largos de massa fresca envolvidos em um molho encorpado, com ervas e sabor de comida feita à mão.">
           <div class="carousel-image"><img
-              src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&amp;fit=crop&amp;w=800&amp;q=85"
-              alt="Pappardelle da casa" loading="lazy"></div>
+              src="assets/img/pappardelle-da-casa.jpeg"
+              alt="Pappardelle da casa" loading="lazy" decoding="async"></div>
         </article>
         <article class="carousel-slide" data-category="Pratos para dois" data-name="Nhoque de cabotiá"
           data-description="Nhoque macio de cabotiá com ragu de fraldinha, preparado lentamente para concentrar o sabor.">
           <div class="carousel-image"><img
-              src="https://images.unsplash.com/photo-1556761223-4c4282c73f77?auto=format&amp;fit=crop&amp;w=800&amp;q=85"
-              alt="Nhoque servido com molho" loading="lazy"></div>
+              src="assets/img/nhoque.jpeg"
+              alt="Nhoque servido com molho" loading="lazy" decoding="async"></div>
         </article>
         <article class="carousel-slide" data-category="Carnes na pedra" data-name="Carne acebolada na pedra"
           data-description="Corte macio servido na pedra quente, com cebolas douradas, mandioca e o tempero especial do Quintal.">
           <div class="carousel-image"><img
-              src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&amp;fit=crop&amp;w=800&amp;q=85"
-              alt="Carne acebolada servida no prato" loading="lazy"></div>
+              src="assets/img/carne-acebolada.jpeg"
+              alt="Carne acebolada servida no prato" loading="lazy" decoding="async"></div>
         </article>
         <article class="carousel-slide" data-category="Sobremesas" data-name="Petit gâteau"
           data-description="Sobremesa quente com interior cremoso, acompanhada de sorvete e calda feita para fechar a experiência.">
           <div class="carousel-image"><img
-              src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&amp;fit=crop&amp;w=800&amp;q=85"
-              alt="Petit gâteau com sorvete" loading="lazy"></div>
+              src="assets/img/petit-gateau.jpeg"
+              alt="Petit gâteau com sorvete" loading="lazy" decoding="async"></div>
         </article>
       </div>
     </div>
@@ -263,8 +266,8 @@
     <div class="split-media">
       <div class="split-image-frame">
         <img class="split-image is-active"
-          src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&amp;fit=crop&amp;w=1000&amp;q=85"
-          alt="Ravioli artesanal com molho">
+          src="assets/img/massa-fresca.jpeg"
+          alt="Massa fresca artesanal servida no prato" loading="lazy" decoding="async">
         <span class="split-image-label">Feito à mão</span>
       </div>
     </div>
@@ -272,22 +275,22 @@
       <p class="section-kicker reveal">O jeito do Quintal</p>
       <h2 class="reveal">Uma mesa para ficar</h2>
       <article class="split-step reveal"
-        data-image="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&amp;fit=crop&amp;w=1000&amp;q=85"
-        data-alt="Ravioli artesanal com molho">
+        data-image="assets/img/massa-fresca.jpeg"
+        data-alt="Massa fresca artesanal servida no prato">
         <span class="split-step-number">01</span>
         <h3>Massa fresca</h3>
         <p>Preparamos cada massa com tempo, cuidado e ingredientes que respeitam o sabor da casa.</p>
       </article>
       <article class="split-step reveal"
-        data-image="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&amp;fit=crop&amp;w=1000&amp;q=85"
-        data-alt="Carne acebolada servida no prato">
+        data-image="assets/img/sabor-regional.jpeg"
+        data-alt="Prato regional com sabor e textura autênticos">
         <span class="split-step-number">02</span>
         <h3>Sabor regional</h3>
         <p>Receitas generosas que passeiam pelas memórias do interior e chegam à mesa para compartilhar.</p>
       </article>
       <article class="split-step reveal"
-        data-image="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&amp;fit=crop&amp;w=1000&amp;q=85"
-        data-alt="Petit gâteau com sorvete">
+        data-image="assets/img/petit-gateau.jpeg"
+        data-alt="Petit gâteau com sorvete e calda artesanal">
         <span class="split-step-number">03</span>
         <h3>Um final doce</h3>
         <p>Para fechar a experiência, sobremesas feitas para prolongar a conversa e deixar vontade de voltar.</p>
@@ -340,10 +343,11 @@
     Quintal das Massas · Chef Fabi - Jardim, MS
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script src="https://kit.fontawesome.com/97c210f299.js" crossorigin="anonymous"></script>
-  <script src="js/main.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script defer src="https://kit.fontawesome.com/97c210f299.js" crossorigin="anonymous"></script>
+  <script defer src="js/main.js"></script>
 
 </body>
 
