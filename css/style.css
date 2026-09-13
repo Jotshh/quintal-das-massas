@@ -765,6 +765,25 @@ h3 {
 }
 
 @media (max-width: 640px) {
+
+    .menu-toggle,
+    .carousel-arrow,
+    .carousel-back,
+    .detail-close,
+    .back-to-top,
+    .dish-card,
+    .cat-tab,
+    .nav-links a {
+        min-width: 48px;
+        min-height: 48px;
+    }
+
+    .menu-toggle {
+        padding: 0;
+    }
+}
+
+@media (max-width: 640px) {
     .carousel-viewport {
         padding-bottom: 24px;
     }
@@ -904,6 +923,7 @@ h3 {
     display: inline-block;
     border: 1px solid var(--ink);
     transition: all .2s;
+    min-height: 48px;
 }
 
 .btn-solid {
