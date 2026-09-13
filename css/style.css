@@ -622,18 +622,10 @@ h3 {
 
 .carousel-viewport {
     width: 100%;
-    overflow-x: auto;
-    padding: 28px calc((100% - var(--carousel-card)) / 2) 38px;
-    scrollbar-width: none;
-    scroll-snap-type: x mandatory;
-    overscroll-behavior-x: contain;
+    overflow: hidden;
+    padding: 28px 0 38px;
     cursor: grab;
     touch-action: pan-y;
-    scroll-behavior: smooth;
-}
-
-.carousel-viewport::-webkit-scrollbar {
-    display: none;
 }
 
 .carousel-viewport:focus-visible {
@@ -644,17 +636,10 @@ h3 {
 .carousel-track {
     display: flex;
     align-items: center;
-    gap: 22px;
-    width: max-content;
 }
 
 .carousel-track.is-dragging {
     cursor: grabbing;
-}
-
-.carousel-viewport.is-dragging {
-    scroll-snap-type: none;
-    scroll-behavior: auto;
 }
 
 .carousel-slide {
@@ -662,9 +647,6 @@ h3 {
     --slide-opacity: 0.6;
     display: grid;
     place-items: center;
-    width: var(--carousel-card);
-    min-width: var(--carousel-card);
-    scroll-snap-align: center;
     opacity: var(--slide-opacity);
     transform: scale(var(--slide-scale));
     transition: transform 0.3s ease, opacity 0.3s ease;
@@ -672,10 +654,16 @@ h3 {
     user-select: none;
 }
 
-.carousel-slide.is-active {
+.swiper-slide-active {
     --slide-scale: 1.15;
     --slide-opacity: 1;
     z-index: 1;
+}
+
+.swiper-slide-prev,
+.swiper-slide-next {
+    --slide-scale: 0.96;
+    --slide-opacity: 0.8;
 }
 
 .carousel-image {
@@ -774,6 +762,20 @@ h3 {
 @keyframes carousel-info-in {
     from { opacity: .2; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+    .carousel-viewport {
+        padding-bottom: 24px;
+    }
+
+    .carousel-slide {
+        --slide-scale: 0.9;
+    }
+
+    .swiper-slide-active {
+        --slide-scale: 1.05;
+    }
 }
 
 /* ---------- MAPA ---------- */
