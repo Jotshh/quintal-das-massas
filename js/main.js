@@ -521,7 +521,10 @@ if (window.gsap && window.ScrollTrigger) {
 
     if (splitSteps[0]) updateSplitImage(splitSteps[0]);
 
-    if (splitSection && splitMedia && window.matchMedia('(min-width: 641px)').matches) {
+    const splitMediaQuery = gsap.matchMedia();
+    splitMediaQuery.add('(min-width: 641px)', () => {
+        if (!splitSection || !splitMedia) return;
+
         ScrollTrigger.create({
             trigger: splitSection,
             start: 'top top',
@@ -531,7 +534,7 @@ if (window.gsap && window.ScrollTrigger) {
             anticipatePin: 1,
             invalidateOnRefresh: true
         });
-    }
+    });
 
     function syncActiveSplitStep() {
         const activationPoint = window.innerHeight * .55;
