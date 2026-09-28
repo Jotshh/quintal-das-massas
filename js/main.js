@@ -475,6 +475,8 @@ if (window.gsap && window.ScrollTrigger) {
 
     const splitImage = document.querySelector('.split-image');
     const splitLabel = document.querySelector('.split-image-label');
+    const splitSection = document.querySelector('.split-scroll');
+    const splitMedia = document.querySelector('.split-media');
     const splitSteps = gsap.utils.toArray('.split-step');
 
     function updateSplitImage(step) {
@@ -487,6 +489,9 @@ if (window.gsap && window.ScrollTrigger) {
 
         // evita troca repetida quando o mesmo passo continua ativo
         if (splitImage.dataset.currentImage === nextImage) return;
+
+        gsap.killTweensOf(splitImage);
+        if (splitLabel) gsap.killTweensOf(splitLabel);
 
         splitImage.dataset.currentImage = nextImage;
 
@@ -514,28 +519,56 @@ if (window.gsap && window.ScrollTrigger) {
         }
     }
 
-    splitSteps.forEach((step, index) => {
+    if (splitSteps[0]) updateSplitImage(splitSteps[0]);
+
+    if (splitSection && splitMedia && window.matchMedia('(min-width: 641px)').matches) {
         ScrollTrigger.create({
-            trigger: step,
-            start: 'top 55%',
-            end: 'bottom 45%',
-            onEnter: () => updateSplitImage(step),
-            onEnterBack: () => updateSplitImage(step)
+            trigger: splitSection,
+            start: 'top top',
+            end: 'bottom bottom',
+            pin: splitMedia,
+            pinSpacing: false,
+            anticipatePin: 1,
+            invalidateOnRefresh: true
+        });
+    }
+
+    function syncActiveSplitStep() {
+        const activationPoint = window.innerHeight * .55;
+        let activeStep = splitSteps[0];
+
+        splitSteps.forEach(step => {
+            if (step.getBoundingClientRect().top <= activationPoint) activeStep = step;
         });
 
-        if (index === 0) updateSplitImage(step);
-    });
+        updateSplitImage(activeStep);
+    }
+
+    let splitSyncScheduled = false;
+    window.addEventListener('scroll', () => {
+        if (splitSyncScheduled) return;
+        splitSyncScheduled = true;
+        requestAnimationFrame(() => {
+            splitSyncScheduled = false;
+            syncActiveSplitStep();
+        });
+    }, { passive: true });
 
     window.addEventListener('load', () => {
         ScrollTrigger.refresh();
+        syncActiveSplitStep();
+    });
+
+    window.addEventListener('pageshow', () => {
+        requestAnimationFrame(() => {
+            ScrollTrigger.refresh();
+            syncActiveSplitStep();
+        });
     });
 
     window.addEventListener('resize', () => {
         ScrollTrigger.refresh();
-    });
-
-    splitImage?.addEventListener('load', () => {
-        ScrollTrigger.refresh();
+        syncActiveSplitStep();
     });
 
     const horizontalSection = document.querySelector('.horizontal-scroll');
