@@ -332,7 +332,17 @@ const carouselDescription = document.getElementById('carouselDescription');
 
 carousel.classList.add('swiper');
 carouselTrack.classList.add('swiper-wrapper');
-carouselSlides.forEach(slide => slide.classList.add('swiper-slide'));
+const swiperSlides = [...carouselSlides];
+
+for (let index = 0; swiperSlides.length < 8 && carouselSlides.length; index += 1) {
+    const duplicate = carouselSlides[index % carouselSlides.length].cloneNode(true);
+    duplicate.setAttribute('aria-hidden', 'true');
+    duplicate.querySelector('img')?.setAttribute('alt', '');
+    carouselTrack.appendChild(duplicate);
+    swiperSlides.push(duplicate);
+}
+
+swiperSlides.forEach(slide => slide.classList.add('swiper-slide'));
 
 const carouselDotsButtons = [];
 
@@ -365,6 +375,7 @@ function updateCarouselInfo(index) {
 
 const dishSwiper = new Swiper('#dishCarousel', {
     loop: true,
+    initialSlide: 0,
     centeredSlides: true,
     slidesPerView: 1.15,
     spaceBetween: 18,
@@ -385,10 +396,10 @@ const dishSwiper = new Swiper('#dishCarousel', {
     },
     on: {
         init: function () {
-            updateCarouselInfo(this.realIndex);
+            updateCarouselInfo(this.realIndex % carouselSlides.length);
         },
         slideChange: function () {
-            updateCarouselInfo(this.realIndex);
+            updateCarouselInfo(this.realIndex % carouselSlides.length);
         },
     },
 });
@@ -424,12 +435,12 @@ revealSelectors.forEach(selector => {
     document.querySelectorAll(selector).forEach(element => element.classList.add('reveal-up'));
 });
 
-document.querySelectorAll('.gallery-grid .ph-card, .dish-card, .carousel-slide').forEach((element, index) => {
+document.querySelectorAll('.gallery-grid .ph-card, .dish-card').forEach((element, index) => {
     element.classList.add('reveal-cascade', 'reveal');
     element.style.setProperty('--reveal-delay', `${(index % 6) * 90}ms`);
 });
 
-document.querySelectorAll('.gallery-grid .ph-card, .dish-card .dish-image-wrap, .carousel-image').forEach(element => {
+document.querySelectorAll('.gallery-grid .ph-card, .dish-card .dish-image-wrap').forEach(element => {
     element.classList.add('reveal-zoom');
 });
 
