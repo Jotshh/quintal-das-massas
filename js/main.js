@@ -332,7 +332,17 @@ const carouselDescription = document.getElementById('carouselDescription');
 
 carousel.classList.add('swiper');
 carouselTrack.classList.add('swiper-wrapper');
-carouselSlides.forEach(slide => slide.classList.add('swiper-slide'));
+const swiperSlides = [...carouselSlides];
+
+for (let index = 0; swiperSlides.length < 8 && carouselSlides.length; index += 1) {
+    const duplicate = carouselSlides[index % carouselSlides.length].cloneNode(true);
+    duplicate.setAttribute('aria-hidden', 'true');
+    duplicate.querySelector('img')?.setAttribute('alt', '');
+    carouselTrack.appendChild(duplicate);
+    swiperSlides.push(duplicate);
+}
+
+swiperSlides.forEach(slide => slide.classList.add('swiper-slide'));
 
 const carouselDotsButtons = [];
 
@@ -365,6 +375,7 @@ function updateCarouselInfo(index) {
 
 const dishSwiper = new Swiper('#dishCarousel', {
     loop: true,
+    initialSlide: 0,
     centeredSlides: true,
     slidesPerView: 1.15,
     spaceBetween: 18,
@@ -385,10 +396,10 @@ const dishSwiper = new Swiper('#dishCarousel', {
     },
     on: {
         init: function () {
-            updateCarouselInfo(this.realIndex);
+            updateCarouselInfo(this.realIndex % carouselSlides.length);
         },
         slideChange: function () {
-            updateCarouselInfo(this.realIndex);
+            updateCarouselInfo(this.realIndex % carouselSlides.length);
         },
     },
 });
@@ -424,12 +435,12 @@ revealSelectors.forEach(selector => {
     document.querySelectorAll(selector).forEach(element => element.classList.add('reveal-up'));
 });
 
-document.querySelectorAll('.gallery-grid .ph-card, .dish-card, .carousel-slide').forEach((element, index) => {
+document.querySelectorAll('.gallery-grid .ph-card, .dish-card').forEach((element, index) => {
     element.classList.add('reveal-cascade', 'reveal');
     element.style.setProperty('--reveal-delay', `${(index % 6) * 90}ms`);
 });
 
-document.querySelectorAll('.gallery-grid .ph-card, .dish-card .dish-image-wrap, .carousel-image').forEach(element => {
+document.querySelectorAll('.gallery-grid .ph-card, .dish-card .dish-image-wrap').forEach(element => {
     element.classList.add('reveal-zoom');
 });
 
@@ -475,6 +486,8 @@ if (window.gsap && window.ScrollTrigger) {
 
     const splitImage = document.querySelector('.split-image');
     const splitLabel = document.querySelector('.split-image-label');
+    const splitSection = document.querySelector('.split-scroll');
+    const splitMedia = document.querySelector('.split-media');
     const splitSteps = gsap.utils.toArray('.split-step');
 
     function updateSplitImage(step) {
@@ -487,6 +500,9 @@ if (window.gsap && window.ScrollTrigger) {
 
         // evita troca repetida quando o mesmo passo continua ativo
         if (splitImage.dataset.currentImage === nextImage) return;
+
+        gsap.killTweensOf(splitImage);
+        if (splitLabel) gsap.killTweensOf(splitLabel);
 
         splitImage.dataset.currentImage = nextImage;
 
@@ -514,28 +530,59 @@ if (window.gsap && window.ScrollTrigger) {
         }
     }
 
-    splitSteps.forEach((step, index) => {
+    if (splitSteps[0]) updateSplitImage(splitSteps[0]);
+
+    const splitMediaQuery = gsap.matchMedia();
+    splitMediaQuery.add('(min-width: 641px)', () => {
+        if (!splitSection || !splitMedia) return;
+
         ScrollTrigger.create({
-            trigger: step,
-            start: 'top 55%',
-            end: 'bottom 45%',
-            onEnter: () => updateSplitImage(step),
-            onEnterBack: () => updateSplitImage(step)
+            trigger: splitSection,
+            start: 'top top',
+            end: 'bottom bottom',
+            pin: splitMedia,
+            pinSpacing: false,
+            anticipatePin: 1,
+            invalidateOnRefresh: true
+        });
+    });
+
+    function syncActiveSplitStep() {
+        const activationPoint = window.innerHeight * .55;
+        let activeStep = splitSteps[0];
+
+        splitSteps.forEach(step => {
+            if (step.getBoundingClientRect().top <= activationPoint) activeStep = step;
         });
 
-        if (index === 0) updateSplitImage(step);
-    });
+        updateSplitImage(activeStep);
+    }
+
+    let splitSyncScheduled = false;
+    window.addEventListener('scroll', () => {
+        if (splitSyncScheduled) return;
+        splitSyncScheduled = true;
+        requestAnimationFrame(() => {
+            splitSyncScheduled = false;
+            syncActiveSplitStep();
+        });
+    }, { passive: true });
 
     window.addEventListener('load', () => {
         ScrollTrigger.refresh();
+        syncActiveSplitStep();
+    });
+
+    window.addEventListener('pageshow', () => {
+        requestAnimationFrame(() => {
+            ScrollTrigger.refresh();
+            syncActiveSplitStep();
+        });
     });
 
     window.addEventListener('resize', () => {
         ScrollTrigger.refresh();
-    });
-
-    splitImage?.addEventListener('load', () => {
-        ScrollTrigger.refresh();
+        syncActiveSplitStep();
     });
 
     const horizontalSection = document.querySelector('.horizontal-scroll');
