@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://quintal-das-massas.vercel.app/sitemap.xml
