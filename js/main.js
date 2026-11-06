@@ -286,16 +286,24 @@ const detailName = document.getElementById('detailName');
 const detailDescription = document.getElementById('detailDescription');
 const detailClose = document.getElementById('detailClose');
 let previousBodyOverflow = '';
+let detailTrigger = null;
+const detailBackground = ['.site-nav', '.menu-backdrop', '.nav-links', 'main', 'footer', '#backToTop']
+    .map(selector => document.querySelector(selector))
+    .filter(Boolean);
 
 function closeDishDetail() {
     dishDetail.classList.remove('is-open');
-    dishDetail.setAttribute('aria-hidden', 'true');
+    dishDetail.setAttribute('inert', '');
+    detailBackground.forEach(el => el.removeAttribute('inert'));
     document.body.classList.remove('detail-is-open');
     document.body.style.overflow = previousBodyOverflow;
+    detailTrigger?.focus();
+    detailTrigger = null;
 }
 
 document.querySelectorAll('.dish-card').forEach(card => {
     card.addEventListener('click', () => {
+        detailTrigger = card;
         detailImage.src = card.dataset.image;
         detailImage.alt = card.querySelector('img').alt;
         detailCategory.textContent = card.dataset.category;
@@ -306,7 +314,8 @@ document.querySelectorAll('.dish-card').forEach(card => {
         document.body.style.overflow = 'hidden';
         document.body.classList.add('detail-is-open');
         dishDetail.classList.add('is-open');
-        dishDetail.setAttribute('aria-hidden', 'false');
+        dishDetail.removeAttribute('inert');
+        detailBackground.forEach(el => el.setAttribute('inert', ''));
         detailClose.focus();
     });
 });
@@ -332,11 +341,18 @@ const carouselDescription = document.getElementById('carouselDescription');
 
 carousel.classList.add('swiper');
 carouselTrack.classList.add('swiper-wrapper');
+carouselSlides.forEach((slide, index) => {
+    slide.setAttribute('role', 'group');
+    slide.setAttribute('aria-roledescription', 'slide');
+    slide.setAttribute('aria-label', `${index + 1} de ${carouselSlides.length}`);
+});
+
 const swiperSlides = [...carouselSlides];
 
 for (let index = 0; swiperSlides.length < 8 && carouselSlides.length; index += 1) {
     const duplicate = carouselSlides[index % carouselSlides.length].cloneNode(true);
     duplicate.setAttribute('aria-hidden', 'true');
+    duplicate.dataset.extra = 'true';
     duplicate.querySelector('img')?.setAttribute('alt', '');
     carouselTrack.appendChild(duplicate);
     swiperSlides.push(duplicate);
@@ -373,6 +389,17 @@ function updateCarouselInfo(index) {
     });
 }
 
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// slides clonados (pelo Swiper ou por nos) ficam fora da arvore de acessibilidade
+function hideCarouselClones(swiper) {
+    swiper.slides.forEach(slide => {
+        const isClone = slide.classList.contains('swiper-slide-duplicate') || slide.dataset.extra === 'true';
+        if (isClone) slide.setAttribute('aria-hidden', 'true');
+        else slide.removeAttribute('aria-hidden');
+    });
+}
+
 const dishSwiper = new Swiper('#dishCarousel', {
     loop: true,
     initialSlide: 0,
@@ -384,9 +411,13 @@ const dishSwiper = new Swiper('#dishCarousel', {
     keyboard: {
         enabled: true,
     },
-    autoplay: {
+    a11y: {
+        enabled: false,
+    },
+    autoplay: prefersReducedMotion ? false : {
         delay: 3200,
         disableOnInteraction: false,
+        pauseOnMouseEnter: true,
     },
     breakpoints: {
         640: {
@@ -396,10 +427,15 @@ const dishSwiper = new Swiper('#dishCarousel', {
     },
     on: {
         init: function () {
+            hideCarouselClones(this);
             updateCarouselInfo(this.realIndex % carouselSlides.length);
         },
         slideChange: function () {
+            hideCarouselClones(this);
             updateCarouselInfo(this.realIndex % carouselSlides.length);
+        },
+        loopFix: function () {
+            hideCarouselClones(this);
         },
     },
 });
